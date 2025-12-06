@@ -5,33 +5,39 @@ const JobCard = ({ job }) => {
     <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 max-w-2xl mx-auto mb-6">
       {/* Header Section */}
       <div className="flex items-start gap-4 mb-4">
-        <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded flex items-center justify-center flex-shrink-0">
-          <span className="text-white font-bold text-xl">A2SV</span>
-        </div>
+        {job.logoUrl ? (
+          <img src={job.logoUrl} alt={job.orgName} className="w-16 h-16 rounded object-cover flex-shrink-0" />
+        ) : (
+          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded flex items-center justify-center flex-shrink-0">
+            <span className="text-white font-bold text-xl">A2SV</span>
+          </div>
+        )}
         <div className="flex-1">
           <h2 className="text-xl font-bold text-blue-900 mb-1">{job.title}</h2>
-          <p className="text-gray-600 text-sm">{job.company}</p>
+          <p className="text-gray-600 text-sm">{job.orgName || job.company}</p>
         </div>
       </div>
 
       {/* Location Section */}
-      <div className="flex gap-4 mb-4">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
-          <span className="text-sm text-gray-700">Addis Ababa</span>
+      {job.location && job.location.length > 0 && (
+        <div className="flex gap-4 mb-4">
+          {job.location.map((loc, index) => (
+            <div key={index} className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+              <span className="text-sm text-gray-700">{loc}</span>
+            </div>
+          ))}
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
-          <span className="text-sm text-gray-700">Adama</span>
-        </div>
-      </div>
+      )}
 
       {/* Tags Section */}
       <div className="flex flex-wrap gap-2 mb-4">
-        <span className="px-4 py-1 bg-purple-100 text-purple-700 rounded-full text-sm border border-purple-300">
-          In Person
-        </span>
-        {job.about.categories.map((category, index) => (
+        {job.opType && (
+          <span className="px-4 py-1 bg-purple-100 text-purple-700 rounded-full text-sm border border-purple-300">
+            {job.opType}
+          </span>
+        )}
+        {job.categories?.map((category, index) => (
           <span key={index} className="px-4 py-1 bg-purple-50 text-purple-600 rounded-full text-sm">
             {category}
           </span>
