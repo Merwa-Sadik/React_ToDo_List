@@ -16,14 +16,18 @@ const JobDescription = ({ job }) => {
       </section>
 
       {/* Responsibilities */}
-      {job.responsibilities && job.responsibilities.length > 0 && (
+      {job.responsibilities && (
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-gray-900 mb-4">Responsibilities</h2>
-          <ul className="list-disc list-inside space-y-2">
-            {job.responsibilities.map((responsibility, index) => (
-              <li key={index} className="text-gray-700">{responsibility}</li>
-            ))}
-          </ul>
+          {Array.isArray(job.responsibilities) ? (
+            <ul className="list-disc list-inside space-y-2">
+              {job.responsibilities.map((responsibility, index) => (
+                <li key={index} className="text-gray-700">{responsibility}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-700 leading-relaxed">{job.responsibilities}</p>
+          )}
         </section>
       )}
 

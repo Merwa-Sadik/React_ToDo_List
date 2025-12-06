@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import JobCard from './JobCard';
 import JobDescription from './JobDescription';
 import { fetchOpportunities, fetchOpportunityById } from '../services/api';
+import { logout } from '../services/auth';
 
 const JobListingDashboard = () => {
+  const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+  const handleLogout = () => {
+    logout();
+    navigate('/signin');
+  };
 
   useEffect(() => {
     const loadJobs = async () => {
@@ -53,7 +62,18 @@ const JobListingDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-100 py-8">
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold text-center text-gray-900 mb-8">Job Listings</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900">Job Listings</h1>
+          <div className="flex items-center gap-4">
+            <span className="text-gray-700">Welcome, {user.name}</span>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
         
         {!selectedJob ? (
           <div className="space-y-6">
