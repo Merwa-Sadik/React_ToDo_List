@@ -1,10 +1,12 @@
 import React from 'react';
 
-const JobCard = ({ job }) => {
+const JobCard = ({ job, isBookmarked, onBookmarkToggle, onJobClick }) => {
   return (
     <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 max-w-2xl mx-auto mb-6">
-      {/* Header Section */}
-      <div className="flex items-start gap-4 mb-4">
+      {/* Clickable Content Area */}
+      <div onClick={onJobClick} className="cursor-pointer">
+        {/* Header Section */}
+        <div className="flex items-start gap-4 mb-4">
         {job.logoUrl ? (
           <img src={job.logoUrl} alt={job.orgName} className="w-16 h-16 rounded object-cover flex-shrink-0" />
         ) : (
@@ -44,20 +46,28 @@ const JobCard = ({ job }) => {
         ))}
       </div>
 
-      {/* Description */}
-      <p className="text-gray-800 text-sm leading-relaxed mb-4">
-        {job.description}
-      </p>
+        {/* Description */}
+        <p className="text-gray-800 text-sm leading-relaxed mb-4">
+          {job.description}
+        </p>
+      </div>
 
       {/* Footer Section */}
       <div className="bg-gray-50 -mx-6 -mb-6 px-6 py-4 rounded-b-lg flex justify-between items-center">
         <div className="flex gap-6">
-          <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onBookmarkToggle?.(job.id);
+            }}
+            className="flex items-center gap-2 hover:text-blue-600 transition-colors"
+            data-testid="bookmark-button"
+          >
+            <svg className={`w-5 h-5 ${isBookmarked ? 'fill-blue-600 text-blue-600' : 'text-gray-600'}`} fill={isBookmarked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
             </svg>
-            <span className="text-gray-700 font-semibold">446</span>
-          </div>
+            <span className="text-gray-700 font-semibold">{isBookmarked ? 'Bookmarked' : 'Bookmark'}</span>
+          </button>
           <div className="flex items-center gap-2">
             <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
